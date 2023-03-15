@@ -93,20 +93,26 @@ public class GuiBetterChat extends GuiNewChat {
 
         GlStateManager.scale(chatScale, chatScale, 1.0F);
         int l = 0;
+        int inverseCounter=0;
 
+        //for (int i1 = 0; i1 + this.scrollPos < drawnLines && i1 < lineCount; i1++) {
         for (int i1 = 0; i1 + this.scrollPos < drawnLines && i1 < lineCount; i1++) {
+
+
+
+
             ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
 
             if (chatline != null) {
-                int j1 = updateCounter - chatline.getUpdatedCounter();
+                int counterDifference = updateCounter - chatline.getUpdatedCounter();
 
-                if (j1 < 200 || this.getChatOpen()) {
-                    double d0 = (double) j1 / 200.0D;
-                    d0 = 1.0D - d0;
-                    d0 = d0 * 10.0D;
-                    d0 = MathHelper.clamp(d0, 0.0D, 1.0D);
-                    d0 = d0 * d0;
-                    int l1 = (int) (255.0D * d0);
+                if (counterDifference < 200 || this.getChatOpen()) {
+                    double counterDiffScaled = (double) counterDifference / 200.0D;
+                    counterDiffScaled = 1.0D - counterDiffScaled;
+                    counterDiffScaled = counterDiffScaled * 10.0D;
+                    counterDiffScaled = MathHelper.clamp(counterDiffScaled, 0.0D, 1.0D);
+                    counterDiffScaled = counterDiffScaled * counterDiffScaled;
+                    int l1 = (int) (255.0D * counterDiffScaled);
 
                     if (this.getChatOpen()) {
                         l1 = 255;
@@ -116,17 +122,21 @@ public class GuiBetterChat extends GuiNewChat {
                     ++l;
 
                     if (l1 > 3) {
+                        inverseCounter++;
                         int i2 = 0;
                         int j2 = -i1 * 9;
+                        if(BetterChat.getSettings().inverse){
+                            j2=-j2;
+                        }
                         if (!BetterChat.getSettings().clear) {
                             drawRect(-2, j2 - 9, i2 + widthCoefficient + 4, j2, l1 / 2 << 24);
                         }
-                        String s = chatline.getChatComponent().getFormattedText();
+                        String message = chatline.getChatComponent().getFormattedText();
                         GlStateManager.enableBlend();
                         if (BetterChat.getSettings().smooth && i1 <= newLines) {
-                            this.mc.fontRenderer.drawStringWithShadow(s, 0.0F, (j2 - 8), 16777215 + ((int) (l1 * percent) << 24));
+                            this.mc.fontRenderer.drawStringWithShadow(message, 0.0F, (j2 - 8), 16777215 + ((int) (l1 * percent) << 24));
                         } else {
-                            this.mc.fontRenderer.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));
+                            this.mc.fontRenderer.drawStringWithShadow(message, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));
                         }
                         GlStateManager.disableAlpha();
                         GlStateManager.disableBlend();
