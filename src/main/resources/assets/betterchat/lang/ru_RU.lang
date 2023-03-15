@@ -1,0 +1,14 @@
+gui.betterchat.text.title=%1$s от %2$s
+gui.betterchat.text.drag=Зажмите окно чата, чтобы перенести его
+gui.betterchat.text.clear.name=Прозрачный фон чата:
+gui.betterchat.text.clear.enabled=Включено
+gui.betterchat.text.clear.disabled=Выключено
+gui.betterchat.text.smooth.name=Плавный чат:
+gui.betterchat.text.smooth.enabled=Включено
+gui.betterchat.text.smooth.disabled=Выключено
+gui.betterchat.text.scale.name=Размер:
+gui.betterchat.text.width.name=Ширина:
+gui.betterchat.text.reset.name=Сбросить настройки
+gui.betterchat.text.example1=Пример чата
+gui.betterchat.text.example2=Тест, тест, 1, 2, 3
+gui.betterchat.text.example3=Сообщения игроков выглядят вот так:
