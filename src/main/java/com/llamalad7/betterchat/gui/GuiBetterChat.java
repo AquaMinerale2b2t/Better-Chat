@@ -94,7 +94,7 @@ public class GuiBetterChat extends GuiNewChat {
         GlStateManager.scale(chatScale, chatScale, 1.0F);
         int l = 0;
 
-        for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < lineCount; i1++) {
+        for (int i1 = 0; i1 + this.scrollPos < drawnLines && i1 < lineCount; i1++) {
             ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
 
             if (chatline != null) {
