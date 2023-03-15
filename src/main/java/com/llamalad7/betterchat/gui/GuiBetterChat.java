@@ -55,10 +55,12 @@ public class GuiBetterChat extends GuiNewChat {
 
     public void drawChat(int updateCounter) {
         if (configuring) return;
+
         if (prevMillis == -1) {
             prevMillis = System.currentTimeMillis();
             return;
         }
+
         long current = System.currentTimeMillis();
         long diff = current - prevMillis;
         prevMillis = current;
@@ -66,85 +68,88 @@ public class GuiBetterChat extends GuiNewChat {
         float t = percentComplete;
         float percent = 1 - (--t) * t * t * t;
         percent = clamp(percent, 0, 1);
-        if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
-            int i = this.getLineCount();
-            int j = this.drawnChatLines.size();
-            float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
 
-            if (j > 0) {
-                boolean flag = false;
+        if (this.mc.gameSettings.chatVisibility == EntityPlayer.EnumChatVisibility.HIDDEN) {
+            return;
+        }
 
-                if (this.getChatOpen()) {
-                    flag = true;
-                }
+        int i = this.getLineCount();
+        int j = this.drawnChatLines.size();
+        float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
 
-                float f1 = this.getChatScale();
-                int k = MathHelper.ceil((float) this.getChatWidth() / f1);
-                GlStateManager.pushMatrix();
-                if (BetterChat.getSettings().smooth && !this.isScrolled) GlStateManager.translate(2.0F + BetterChat.getSettings().xOffset, 8.0F + BetterChat.getSettings().yOffset + (9 - 9*percent)*f1, 0.0F);
-                else GlStateManager.translate(2.0F + BetterChat.getSettings().xOffset, 8.0F + BetterChat.getSettings().yOffset, 0.0F);
-                GlStateManager.scale(f1, f1, 1.0F);
-                int l = 0;
+        if (j > 0) {
+            boolean flag = false;
 
-                for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1) {
-                    ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
+            if (this.getChatOpen()) {
+                flag = true;
+            }
 
-                    if (chatline != null) {
-                        int j1 = updateCounter - chatline.getUpdatedCounter();
+            float f1 = this.getChatScale();
+            int k = MathHelper.ceil((float) this.getChatWidth() / f1);
+            GlStateManager.pushMatrix();
+            if (BetterChat.getSettings().smooth && !this.isScrolled) GlStateManager.translate(2.0F + BetterChat.getSettings().xOffset, 8.0F + BetterChat.getSettings().yOffset + (9 - 9*percent)*f1, 0.0F);
+            else GlStateManager.translate(2.0F + BetterChat.getSettings().xOffset, 8.0F + BetterChat.getSettings().yOffset, 0.0F);
+            GlStateManager.scale(f1, f1, 1.0F);
+            int l = 0;
 
-                        if (j1 < 200 || flag) {
-                            double d0 = (double) j1 / 200.0D;
-                            d0 = 1.0D - d0;
-                            d0 = d0 * 10.0D;
-                            d0 = MathHelper.clamp(d0, 0.0D, 1.0D);
-                            d0 = d0 * d0;
-                            int l1 = (int) (255.0D * d0);
+            for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1) {
+                ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
 
-                            if (flag) {
-                                l1 = 255;
+                if (chatline != null) {
+                    int j1 = updateCounter - chatline.getUpdatedCounter();
+
+                    if (j1 < 200 || flag) {
+                        double d0 = (double) j1 / 200.0D;
+                        d0 = 1.0D - d0;
+                        d0 = d0 * 10.0D;
+                        d0 = MathHelper.clamp(d0, 0.0D, 1.0D);
+                        d0 = d0 * d0;
+                        int l1 = (int) (255.0D * d0);
+
+                        if (flag) {
+                            l1 = 255;
+                        }
+
+                        l1 = (int) ((float) l1 * f);
+                        ++l;
+
+                        if (l1 > 3) {
+                            int i2 = 0;
+                            int j2 = -i1 * 9;
+                            if (!BetterChat.getSettings().clear) {
+                                drawRect(-2, j2 - 9, i2 + k + 4, j2, l1 / 2 << 24);
                             }
-
-                            l1 = (int) ((float) l1 * f);
-                            ++l;
-
-                            if (l1 > 3) {
-                                int i2 = 0;
-                                int j2 = -i1 * 9;
-                                if (!BetterChat.getSettings().clear) {
-                                    drawRect(-2, j2 - 9, i2 + k + 4, j2, l1 / 2 << 24);
-                                }
-                                String s = chatline.getChatComponent().getFormattedText();
-                                GlStateManager.enableBlend();
-                                if (BetterChat.getSettings().smooth && i1 <= newLines) {
-                                    this.mc.fontRenderer.drawStringWithShadow(s, 0.0F, (j2 - 8), 16777215 + ((int) (l1 * percent) << 24));
-                                } else {
-                                    this.mc.fontRenderer.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));
-                                }
-                                GlStateManager.disableAlpha();
-                                GlStateManager.disableBlend();
+                            String s = chatline.getChatComponent().getFormattedText();
+                            GlStateManager.enableBlend();
+                            if (BetterChat.getSettings().smooth && i1 <= newLines) {
+                                this.mc.fontRenderer.drawStringWithShadow(s, 0.0F, (j2 - 8), 16777215 + ((int) (l1 * percent) << 24));
+                            } else {
+                                this.mc.fontRenderer.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));
                             }
+                            GlStateManager.disableAlpha();
+                            GlStateManager.disableBlend();
                         }
                     }
                 }
-
-                if (flag) {
-                    int k2 = this.mc.fontRenderer.FONT_HEIGHT;
-                    GlStateManager.translate(-3.0F, 0.0F, 0.0F);
-                    int l2 = j * k2 + j;
-                    int i3 = l * k2 + l;
-                    int j3 = this.scrollPos * i3 / j;
-                    int k1 = i3 * i3 / l2;
-
-                    if (l2 != i3) {
-                        int k3 = j3 > 0 ? 170 : 96;
-                        int l3 = this.isScrolled ? 13382451 : 3355562;
-                        drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
-                        drawRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
-                    }
-                }
-
-                GlStateManager.popMatrix();
             }
+
+            if (flag) {
+                int k2 = this.mc.fontRenderer.FONT_HEIGHT;
+                GlStateManager.translate(-3.0F, 0.0F, 0.0F);
+                int l2 = j * k2 + j;
+                int i3 = l * k2 + l;
+                int j3 = this.scrollPos * i3 / j;
+                int k1 = i3 * i3 / l2;
+
+                if (l2 != i3) {
+                    int k3 = j3 > 0 ? 170 : 96;
+                    int l3 = this.isScrolled ? 13382451 : 3355562;
+                    drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
+                    drawRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
+                }
+            }
+
+            GlStateManager.popMatrix();
         }
     }
 

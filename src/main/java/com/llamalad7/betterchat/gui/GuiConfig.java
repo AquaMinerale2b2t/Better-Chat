@@ -27,7 +27,7 @@ public class GuiConfig extends GuiScreen {
     private List<ITextComponent> exampleChat = new ArrayList<>();
     private boolean dragging = false;
     private int chatLeft, chatRight, chatTop, chatBottom, dragStartX, dragStartY;
-    private GuiButton clearButton, smoothButton;
+    private GuiButton clearButton, smoothButton, inverseButton;
     private GuiSlider scaleSlider, widthSlider;
 
 
@@ -44,9 +44,10 @@ public class GuiConfig extends GuiScreen {
         InjectHandler.chatGUI.configuring = true;
         buttonList.add(clearButton = new GuiButton(0, width / 2 - 120, height / 2 - 50, 240, 20, getPropName("clear") + " " + getColoredBool("clear", settings.clear)));
         buttonList.add(smoothButton = new GuiButton(1, width / 2 - 120, height / 2 - 25, 240, 20, getPropName("smooth") + " " + getColoredBool("smooth", settings.smooth)));
-        buttonList.add(scaleSlider = new GuiSlider(3, width / 2 - 120, height / 2, 240, 20, getPropName("scale") + " ", "%", 0, 100, this.mc.gameSettings.chatScale*100, false, true));
-        buttonList.add(widthSlider = new GuiSlider(4, width / 2 - 120, height / 2 + 25, 240, 20, getPropName("width") + " ", "px", 40, 320, calculateChatboxWidth(this.mc.gameSettings.chatWidth), false, true));
-        buttonList.add(new GuiButton(2, width / 2 - 120, height / 2 + 50, 240, 20, getPropName("reset")));
+        buttonList.add(inverseButton = new GuiButton(5, width / 2 - 120, height / 2 - 0, 240, 20, getPropName("inverse") + " " + getColoredBool("inverse", settings.inverse)));
+        buttonList.add(scaleSlider = new GuiSlider(3, width / 2 - 120, height / 2 + 25, 240, 20, getPropName("scale") + " ", "%", 0, 100, this.mc.gameSettings.chatScale*100, false, true));
+        buttonList.add(widthSlider = new GuiSlider(4, width / 2 - 120, height / 2 + 50, 240, 20, getPropName("width") + " ", "px", 40, 320, calculateChatboxWidth(this.mc.gameSettings.chatWidth), false, true));
+        buttonList.add(new GuiButton(2, width / 2 - 120, height / 2 + 75, 240, 20, getPropName("reset")));
     }
 
     @Override
@@ -146,6 +147,10 @@ public class GuiConfig extends GuiScreen {
                 scaleSlider.updateSlider();
                 widthSlider.setValue(calculateChatboxWidth(this.mc.gameSettings.chatWidth));
                 widthSlider.updateSlider();
+            case 5:
+                settings.inverse = !settings.inverse;
+                button.displayString = getPropName("inverse") + " " + getColoredBool("inverse", settings.inverse);
+                break;
         }
     }
 

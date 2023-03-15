@@ -11,6 +11,7 @@ public class ChatSettings {
     public boolean clear;
     public int xOffset;
     public int yOffset;
+    public boolean inverse;
 
     public ChatSettings(Configuration config) {
         this.config = config;
@@ -35,6 +36,9 @@ public class ChatSettings {
         prop = config.get("All", "Smooth", true);
         prop.set(smooth = true);
 
+        prop = config.get("All", "Inverse", false);
+        prop.set(inverse = false);
+
         prop = config.get("All", "xOffset", 0);
         prop.set(xOffset = 0);
 
@@ -55,6 +59,10 @@ public class ChatSettings {
         prop = config.get("All", "Smooth", true);
         if (load) smooth = prop.getBoolean();
         else prop.set(smooth);
+
+        prop = config.get("All", "Inverse", false);
+        if (load) smooth = prop.getBoolean();
+        else prop.set(inverse);
 
         prop = config.get("All", "xOffset", 0);
         if (load) xOffset = prop.getInt();
